@@ -15,7 +15,7 @@ export default function Header() {
   }, []);
 
   const menuItems = ["HAKKIMIZDA", "ARSIV", "KATKI YAP", "MDBLOG", "İLETİŞİM"];
-  const mobileMainMenuItems = ["HAKKIMIZDA", "ARŞİV", "MDBLOG"];
+  const mobileMainMenuItems = ["HAKKIMIZDA", "ARSIV", "MDBLOG"];
   const mobileDropdownItems = menuItems.filter(
     (item) => !mobileMainMenuItems.includes(item)
   );
