@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Chronica Pro";
+  src: url("../public/fonts/ChronicaProRegularIt.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chronica Pro";
+  src: url("../public/fonts/ChronicaPro-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chronica Pro";
+  src: url("../public/fonts/ChronicaPro-Thin.ttf") format("truetype");
+  font-weight: 300; /* Adjust to thin weight */
+  font-style: italic;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Chronica Pro", sans-serif;
+}
+@layer base {
+  body {
+    @apply font-chronica;
+  }
+}
