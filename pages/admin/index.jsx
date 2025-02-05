@@ -1,13 +1,6 @@
-import React from "react";
-import AdminHero from "./AdminHero";
-import LoginForm from "./LoginForm";
+import { NextStudio } from "next-sanity/studio";
+import config from "../../mavidalga-blog/sanity.config";
 
-const Home = () => {
-  return (
-    <div>
-      <LoginForm />
-    </div>
-  );
-};
-
-export default Home;
+export default function AdminPage() {
+  return <NextStudio config={config} />;
+}
