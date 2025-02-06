@@ -1,10 +1,11 @@
+import React, { Suspense, lazy } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-
-import React from "react";
 import Wave from "react-wavify";
 import Hakkimizda from "./Hakkimizda";
-import Ekibimiz from "./Ekibimiz";
+
+// Lazy load the Server Component
+const Ekibimiz = lazy(() => import("./Ekibimiz"));
 
 const Home = () => {
   return (
@@ -19,19 +20,25 @@ const Home = () => {
             fill="#fe5200"
             paused={false}
             options={{
-              height: 20, // Reduce wave height for better integration
-              amplitude: 20, // Smoothen the wave
+              height: 20,
+              amplitude: 20,
               speed: 0.2,
               points: 4,
             }}
             style={{
               width: "100%",
-              height: "10rem", // Limit wave height to prevent overlap
+              height: "10rem",
             }}
           />
         </div>
+
         <Hakkimizda />
-        <Ekibimiz />
+
+        {/* Wrap Ekibimiz in Suspense */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Ekibimiz />
+        </Suspense>
+
         <Footer />
       </div>
     </div>

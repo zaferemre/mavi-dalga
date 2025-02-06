@@ -1,5 +1,14 @@
 import { groq } from "next-sanity";
 
+// Query for fetching all team members
+export const teamQuery = groq`*[_type == "team"] {
+  _id,
+  name,
+  role,
+  "imageUrl": image.asset->url,
+  bio
+}`;
+
 // Get all posts
 export const postsQuery = groq`*[_type == "post"] | order(_createdAt desc) {
   _createdAt,

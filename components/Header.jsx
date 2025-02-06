@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 
 export default function Header() {
@@ -32,20 +31,20 @@ export default function Header() {
           {/* Logo - MAVİ DALGA */}
           <a
             href="/"
-            className={`text-5xl font-bold tracking-widest uppercase leading-none ${
+            className={`text-5xl font-bold tracking-widest leading-none ${
               scrolled ? "text-black" : "text-white"
             }`}
             style={{ letterSpacing: "8px" }}
           >
-            <div>MAVİ</div>
-            <div>DALGA</div>
+            <div>mavi</div>
+            <div>dalga</div>
           </a>
 
           {/* Right Menu */}
           <div className="ml-auto flex items-center space-x-4">
             {/* Social Media Links */}
             <a
-              href="https://twitter.com/AnywhereWeRoam"
+              href="https://twitter.com/mavidalgadergi"
               target="_blank"
               rel="noopener noreferrer"
               className={`hover:opacity-70 transition duration-150 ${
@@ -55,7 +54,7 @@ export default function Header() {
               <i className="fa fa-twitter text-2xl"></i>
             </a>
             <a
-              href="https://www.instagram.com/Anywhere_We_Roam/"
+              href="https://www.instagram.com/mavidalgadergi/"
               target="_blank"
               rel="noopener noreferrer"
               className={`hover:opacity-70 transition duration-150 ${
@@ -65,23 +64,16 @@ export default function Header() {
               <i className="fa fa-instagram text-2xl"></i>
             </a>
             <a
-              href="https://www.facebook.com/anywhereweroam"
+              href="https://www.linkedin.com/company/mavidalga/"
               target="_blank"
               rel="noopener noreferrer"
               className={`hover:opacity-70 transition duration-150 ${
                 scrolled ? "text-black" : "text-white"
               }`}
             >
-              <i className="fa fa-facebook-official text-2xl"></i>
+              <i className="fa fa-linkedin text-2xl"></i>
             </a>
-            <button
-              type="button"
-              className={`transition duration-150 ease-in-out ${
-                scrolled ? "text-black hover:text-gray-700" : "text-white"
-              } hidden md:block`}
-            >
-              <i className="fa fa-search text-2xl"></i>
-            </button>
+
             {/* Hamburger Menu (Hidden on Desktop) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
