@@ -2,6 +2,11 @@
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
+import BlogPreview from "../components/BlogPreview";
+import FeatureSec from "../components/FeatureSec";
+import CTA from "../components/CTA";
+import Bento from "../components/Bento";
+import Content from "../components/Content";
 export default function Home() {
   return (
     <div>
@@ -10,14 +15,12 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
+      <BlogPreview />
+      <Content />
+      <FeatureSec />
+      <Bento />
+      <CTA />
 
-      {/* Additional Scrollable Content */}
-      <div className="bg-gray-100 text-black p-12">
-        <h2 className="text-4xl font-bold mb-4">More Content Here</h2>
-        <p className="text-lg">
-          Add your sections here. Scroll down to see the header change!
-        </p>
-      </div>
       <Footer />
     </div>
   );

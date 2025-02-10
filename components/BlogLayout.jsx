@@ -28,7 +28,7 @@ export default function BlogLayout({ children }) {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-6">
+      <main className="max-w-6xl mx-auto sm:p-0 lg:p-6">
         {/* Center the content */}
         <div className="w-full mx-auto text-center">{children}</div>
       </main>

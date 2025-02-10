@@ -8,11 +8,11 @@ export default function Hero() {
     >
       {/* Centered Content */}
       <div className=" text-center px-4">
-        <h1 className="text-4xl lg:text-6xl font-bold tracking-widest uppercase">
-          FAKİR TOMMO WAS HERE
+        <h1 className="text-4xl lg:text-6xl font-bold tracking-widest ">
+          su çok güzel
         </h1>
-        <p className="mt-4 text-lg lg:text-2xl uppercase tracking-widest font-light">
-          AND LULI
+        <p className="mt-4 text-lg lg:text-2xl  tracking-widest font-light">
+          gelsene!
         </p>
       </div>
     </div>

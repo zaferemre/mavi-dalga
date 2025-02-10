@@ -13,11 +13,16 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuItems = ["HAKKIMIZDA", "ARSIV", "KATKI YAP", "MDBLOG", "İLETİŞİM"];
-  const mobileMainMenuItems = ["HAKKIMIZDA", "ARSIV", "MDBLOG"];
-  const mobileDropdownItems = menuItems.filter(
-    (item) => !mobileMainMenuItems.includes(item)
-  );
+  const menuItems = [
+    { label: "HAKKIMIZDA", link: "/hakkimizda" },
+    { label: "ARŞİV", link: "/arsiv" },
+    { label: "MDBLOG", link: "/mdblog" },
+    { label: "KATKI YAP", link: "/katki-yap" },
+    { label: "İLETİŞİM", link: "/iletisim" },
+  ];
+
+  const mobileMainMenuItems = menuItems.slice(0, 3); // First 3 items for mobile main menu
+  const mobileDropdownItems = menuItems.slice(3); // Remaining items for mobile dropdown
 
   return (
     <header
@@ -90,24 +95,24 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <title>Menu</title>
-                <path d="M2 4h20a1 1 0 0 1 0 2H2a1 1 0 1 1 0-2zm0 7h20a1 1 0 0 1 0 2H2a1 1 0 1 1 0-2zm0 7h20a1 1 0 0 1 0 2H2a1 1 0 0 1 0-2z"></path>
+                <path d="M2 4h20a1 1 0 0 1 0 2H2a1 1 0 1 1 0-2zm0 7h20a1 1 0 0 1 0 2H2a1 1 0 1 1 0-2zm0 7h20a1 1 0 0 1 0 2H2a1 1 0 1 1 0-2z"></path>
               </svg>
             </button>
           </div>
         </div>
 
-        {/* Navigation Links (Desktop: All Items, Mobile: Subset) */}
+        {/* Navigation Links (Desktop) */}
         <div className="w-full border-t border-gray-200">
           <ul className="hidden md:flex items-center justify-center flex-nowrap px-2 sm:px-0">
-            {menuItems.map((item) => (
-              <li key={item} className="mr-4">
+            {menuItems.map(({ label, link }) => (
+              <li key={label} className="mr-4">
                 <a
-                  href={`/${item.toLowerCase()}`}
+                  href={link}
                   className={`block py-2 text-sm font-semibold tracking-widest transition duration-150 ease-in-out ${
                     scrolled ? "text-black hover:text-gray-700" : "text-white"
                   }`}
                 >
-                  {item}
+                  {label}
                 </a>
               </li>
             ))}
@@ -115,32 +120,32 @@ export default function Header() {
 
           {/* Mobile Main Menu */}
           <ul className="flex md:hidden items-center justify-center flex-nowrap px-2 sm:px-0">
-            {mobileMainMenuItems.map((item) => (
-              <li key={item} className="mr-4">
+            {mobileMainMenuItems.map(({ label, link }) => (
+              <li key={label} className="mr-4">
                 <a
-                  href={`/${item.toLowerCase()}`}
+                  href={link}
                   className={`block py-2 text-sm font-semibold tracking-widest transition duration-150 ease-in-out ${
                     scrolled ? "text-black hover:text-gray-700" : "text-white"
                   }`}
                 >
-                  {item}
+                  {label}
                 </a>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Mobile Dropdown Menu (Only on Mobile) */}
+        {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="absolute top-full w-full bg-white shadow-md text-black md:hidden">
             <ul className="flex flex-col items-start px-6 py-4 space-y-2">
-              {mobileDropdownItems.map((item) => (
-                <li key={item}>
+              {mobileDropdownItems.map(({ label, link }) => (
+                <li key={label}>
                   <a
-                    href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    href={link}
                     className="block py-2 text-sm font-semibold hover:text-gray-700 transition duration-150"
                   >
-                    {item}
+                    {label}
                   </a>
                 </li>
               ))}

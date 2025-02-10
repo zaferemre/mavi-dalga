@@ -19,7 +19,7 @@ export default function Post({ post }) {
   const body = post?.body || [];
 
   return (
-    <article className="mx-auto w-full max-w-screen-xl gap-5 px-4 pt-16 md:grid-cols-4 md:pt-24 lg:gap-4 lg:px-20">
+    <article className="mx-auto w-full max-w-screen-xl gap-5 md:grid-cols-4 md:pt-8 lg:gap-4 lg:px-20">
       <main className="md:col-span-3 mx-auto w-full">
         <Card>
           <CardContent className="p-10">
@@ -27,9 +27,9 @@ export default function Post({ post }) {
             <h1 className="text-left text-3xl font-bold">{title}</h1>
             <p className="text-left text-lg my-4">{description}</p>
 
-            {/* ✅ Main Image (Using Your Preferred Format) */}
+            {/* ✅ Fixed: Use Next.js 13+ Image Format */}
             {post.mainImage && (
-              <div className="-mx-10 my-8">
+              <div className="relative w-full h-[450px] my-8">
                 <Image
                   src={builder
                     .image(post.mainImage)
@@ -37,9 +37,9 @@ export default function Post({ post }) {
                     .height(675)
                     .url()}
                   alt={mainImageAlt}
-                  width={1200}
-                  height={675}
-                  className="h-auto w-full mx-auto"
+                  fill
+                  className="object-cover rounded-lg"
+                  priority
                 />
               </div>
             )}
@@ -67,13 +67,14 @@ export default function Post({ post }) {
                   types: {
                     image: ({ value }) => {
                       return (
-                        <Image
-                          src={builder.image(value).url()}
-                          alt={value.alt || ""}
-                          width={1200}
-                          height={675}
-                          className="h-auto w-full mx-auto"
-                        />
+                        <div className="relative w-full h-[450px] my-8">
+                          <Image
+                            src={builder.image(value).url()}
+                            alt={value.alt || ""}
+                            fill
+                            className="object-cover rounded-lg"
+                          />
+                        </div>
                       );
                     },
                   },

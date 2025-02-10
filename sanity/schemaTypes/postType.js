@@ -24,6 +24,10 @@ export const postType = defineType({
       to: { type: "author" },
     }),
     defineField({
+      name: "description",
+      type: "string",
+    }),
+    defineField({
       name: "mainImage",
       type: "image",
       options: {

@@ -12,6 +12,7 @@ export async function getStaticProps() {
         title,
         slug,
         publishedAt,
+        description,
         mainImage {
           asset -> {
             url
@@ -25,7 +26,8 @@ export async function getStaticProps() {
               url
             }
           }
-        }
+        },
+        categories[]-> { title }
       }`);
 
     if (!Array.isArray(posts)) {
