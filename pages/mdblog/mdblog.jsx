@@ -32,7 +32,7 @@ const MDBlog = ({ posts = [] }) => {
       {categories.length > 0 && (
         <div className="mb-6 flex border rounded-lg overflow-hidden divide-x">
           <button
-            className={`flex-1 py-2 text-center ${selectedCategory === "All" ? "bg-gray-300 font-bold" : "bg-white"}`}
+            className={`px-3 py-1 text-center text-sm ${selectedCategory === "All" ? "bg-gray-300 font-bold" : "bg-white"}`}
             onClick={() => setSelectedCategory("All")}
           >
             All
@@ -40,7 +40,7 @@ const MDBlog = ({ posts = [] }) => {
           {categories.map((category, index) => (
             <button
               key={index}
-              className={`flex-1 py-2 text-center ${selectedCategory === category ? "bg-gray-300 font-bold" : "bg-white"}`}
+              className={`px-3 py-1 text-center text-sm ${selectedCategory === category ? "bg-gray-300 font-bold" : "bg-white"}`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
@@ -71,48 +71,51 @@ const MDBlog = ({ posts = [] }) => {
             return (
               <Card
                 key={postSlug}
-                className="overflow-hidden transition-transform duration-300 hover:scale-105"
+                className="relative overflow-hidden transition-transform duration-300 hover:scale-105 rounded-lg h-[400px]"
               >
-                <Link href={`/mdblog/${postSlug}`} className="block">
+                <Link
+                  href={`/mdblog/${postSlug}`}
+                  className="block h-full relative"
+                >
                   {postImage ? (
-                    <div className="relative h-48 w-full">
+                    <div className="absolute inset-0">
                       <Image
                         src={postImage}
                         alt={postAlt}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-t-lg"
+                        className="rounded-lg"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
                     </div>
                   ) : (
-                    <div className="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500">
+                    <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-500">
                       No Image Available
                     </div>
                   )}
 
-                  <CardContent className="pt-4">
-                    <h3 className="mb-2 font-semibold text-lg leading-6 text-gray-900 group-hover:text-gray-600">
+                  {/* Categories in Top Right */}
+                  {postCategories.length > 0 && (
+                    <div className="absolute top-2 right-2 flex flex-wrap gap-1">
+                      {postCategories.map((category, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 text-xs font-medium text-white bg-orange-600 rounded"
+                        >
+                          {category}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <CardContent className="absolute bottom-0 p-4 text-white w-full">
+                    <h3 className="mb-2 font-semibold text-lg leading-6">
                       {postTitle}
                     </h3>
-
-                    {postCategories.length > 0 && (
-                      <div className="mb-2 flex flex-wrap gap-2">
-                        {postCategories.map((category, index) => (
-                          <span
-                            key={index}
-                            className="py-1 text-xs font-medium text-orange-700"
-                          >
-                            {category}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <p className="mb-4 line-clamp-2 text-sm leading-6 text-gray-600">
+                    <p className="line-clamp-2 text-sm leading-6">
                       {postDescription}
                     </p>
-
-                    <div className="flex items-center gap-x-4">
+                    <div className="flex items-center gap-x-4 mt-4">
                       {authorImage ? (
                         <Image
                           src={authorImage}
@@ -127,12 +130,10 @@ const MDBlog = ({ posts = [] }) => {
                         </div>
                       )}
                       <div className="text-sm">
-                        <p className="font-semibold text-gray-900">
-                          {authorName}
-                        </p>
+                        <p className="font-semibold">{authorName}</p>
                         <time
                           dateTime={post.publishedAt}
-                          className="text-gray-500"
+                          className="text-gray-300"
                         >
                           {postDate}
                         </time>

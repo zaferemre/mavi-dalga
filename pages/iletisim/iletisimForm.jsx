@@ -60,7 +60,7 @@ export default function IletisimForm() {
                   Bize Yazın
                 </h1>
                 <div className="absolute bottom-0 w-full lg:p-11 p-5">
-                  <div className="bg-white rounded-lg p-6 block">
+                  <div className="bg-white opacity-85 rounded-lg p-6 block">
                     <a
                       href="https://maps.app.goo.gl/sSjfgoqKuEPLpFuo6"
                       className="flex items-center mb-6 hover:text-[#fe5200]"
