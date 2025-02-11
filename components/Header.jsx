@@ -17,7 +17,9 @@ export default function Header() {
     { label: "HAKKIMIZDA", link: "/hakkimizda" },
     { label: "ARŞİV", link: "/arsiv" },
     { label: "MDBLOG", link: "/mdblog" },
-    { label: "KATKI YAP", link: "/katki-yap" },
+    {
+      /*{ label: "KATKI YAP", link: "/katki-yap" }*/
+    },
     { label: "İLETİŞİM", link: "/iletisim" },
   ];
 
