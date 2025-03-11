@@ -90,7 +90,14 @@ const MDBlog = ({ posts = [] }) => {
                     </div>
                   ) : (
                     <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-500">
-                      No Image Available
+                      <Image
+                        src={"/logoBig.webp"}
+                        alt={post.title || "Post image"}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-t-lg"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
                     </div>
                   )}
 

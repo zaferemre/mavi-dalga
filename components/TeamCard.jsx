@@ -8,7 +8,7 @@ const TeamCard = ({ member, onClick }) => {
     >
       {/* Image with rounded top */}
       <img
-        src={member.image?.asset?.url}
+        src={member.image?.asset?.url || "logoBig.webp"}
         alt={member.name}
         className="w-full h-64 object-cover rounded-t-lg"
       />

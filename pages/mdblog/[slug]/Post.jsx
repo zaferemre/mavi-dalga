@@ -14,7 +14,7 @@ export default function Post({ post }) {
   const builder = imageUrlBuilder(client);
   const title = post?.title || "Untitled Post";
   const description = post?.description;
-  const mainImage = post?.mainImage || null;
+  const mainImage = post?.mainImage;
   const mainImageAlt = post?.mainImage?.alt || title;
   const body = post?.body || [];
 
@@ -24,18 +24,20 @@ export default function Post({ post }) {
         <Card>
           <CardContent className="p-10">
             {/* Title and Description */}
-            <h1 className="text-left text-3xl font-bold">{title}</h1>
-            <p className="text-left text-lg my-4">{description}</p>
+            <h1 className="text-left text-3xl font-bold break-words">
+              {title}
+            </h1>
+            {description && (
+              <p className="text-left text-lg my-4 break-words">
+                {description}
+              </p>
+            )}
 
-            {/* ✅ Fixed: Use Next.js 13+ Image Format */}
-            {post.mainImage && (
+            {/* ✅ Display Main Image if Available */}
+            {mainImage && (
               <div className="relative w-full h-[450px] my-8">
                 <Image
-                  src={builder
-                    .image(post.mainImage)
-                    .width(1200)
-                    .height(675)
-                    .url()}
+                  src={builder.image(mainImage).width(1200).height(675).url()}
                   alt={mainImageAlt}
                   fill
                   className="object-cover rounded-lg"
@@ -44,24 +46,51 @@ export default function Post({ post }) {
               </div>
             )}
 
-            {/* Body content */}
+            {/* ✅ Render Blog Content with Quote Handling */}
             {body.length > 0 ? (
               <PortableText
                 value={body}
                 components={{
                   block: {
                     h2: ({ children }) => (
-                      <h2 className="text-2xl font-bold my-4 text-left">
+                      <h2 className="text-2xl font-bold my-4 text-left break-words">
                         {children}
                       </h2>
                     ),
                     h3: ({ children }) => (
-                      <h3 className="text-xl font-semibold my-4 text-left">
+                      <h3 className="text-xl font-semibold my-4 text-left break-words">
                         {children}
                       </h3>
                     ),
                     normal: ({ children }) => (
-                      <p className="my-4 text-gray-700 text-left">{children}</p>
+                      <p className="my-4 text-gray-700 text-left break-words">
+                        {children}
+                      </p>
+                    ),
+                    blockquote: ({ children }) => (
+                      <blockquote className="italic border-l-4 border-gray-400 pl-4  text-black bg-gray-50 p-3 rounded-md my-4">
+                        {children}
+                      </blockquote>
+                    ),
+                  },
+                  marks: {
+                    em: ({ children }) => (
+                      <em className="italic font-normal text-[#4A4A4A]">
+                        {children}
+                      </em>
+                    ), // ✅ Darker gray for readability
+                    strong: ({ children }) => (
+                      <strong className="font-bold">{children}</strong>
+                    ),
+                    link: ({ value, children }) => (
+                      <a
+                        href={value?.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline break-all"
+                      >
+                        {children}
+                      </a>
                     ),
                   },
                   types: {
@@ -70,7 +99,7 @@ export default function Post({ post }) {
                         <div className="relative w-full h-[450px] my-8">
                           <Image
                             src={builder.image(value).url()}
-                            alt={value.alt || ""}
+                            alt={value.alt || "Blog Image"}
                             fill
                             className="object-cover rounded-lg"
                           />
