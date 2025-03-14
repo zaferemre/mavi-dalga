@@ -46,7 +46,7 @@ const BlogPreview = () => {
             onClick={() => router.push("/mdblog")}
             style={{
               backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3), transparent), url(${
-                blog.image || "/logobig.webp"
+                blog.image || "/logoBig.webp"
               })`,
               backgroundSize: "cover",
               backgroundPosition: "center",
