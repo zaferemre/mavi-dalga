@@ -45,9 +45,9 @@ const BlogPreview = () => {
             className="relative rounded-xl overflow-hidden shadow-lg bg-white cursor-pointer transform hover:scale-105 transition duration-300 h-96"
             onClick={() => router.push("/mdblog")}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+            <div className="absolute inset-bu 0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
             <img
-              src={blog.image}
+              src={blog.image || "/logoBig.webp"}
               alt={blog.title}
               className="w-full h-full object-cover"
             />
