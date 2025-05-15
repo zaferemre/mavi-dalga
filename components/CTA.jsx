@@ -22,13 +22,17 @@ export default function Example() {
               </radialGradient>
             </defs>
           </svg>
+
+          {/* Text Content */}
           <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
             <h2 className="text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl">
-              Boost your productivity. Start using our app today.
+              Mavi Dalga’ya Katıl!
             </h2>
             <p className="mt-6 text-lg/8 text-pretty text-gray-300">
-              Ac euismod vel sit maecenas id pellentesque eu sed consectetur.
-              Malesuada adipiscing sagittis vel nulla.
+              Mavi Dalga, öğrenciler tarafından gönüllülükle sürdürülen bağımsız
+              bir yayındır. İçerik üretmekten tasarıma, dağıtımdan organizasyona
+              kadar her adımda katkınız bizim için çok değerli. Sen de bu
+              heyecana ortak ol, derginin bir parçası haline gel!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
               <a
@@ -38,20 +42,22 @@ export default function Example() {
                 Katkı yapın
               </a>
               <a
-                href="/iletisim"
+                href="/hakkimizda"
                 className="text-sm/6 font-semibold text-white"
               >
-                İletişime geçin <span aria-hidden="true">→</span>
+                Hakkımızda <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
-          <div className="relative mt-16 h-80 lg:mt-8">
+
+          {/* Image */}
+          <div className="relative mt-16 h-80 lg:mt-0 lg:h-full lg:w-auto lg:flex-shrink-0 lg:absolute lg:bottom-0 lg:right-0">
             <img
               alt="App screenshot"
               src="/orangeLady.jpg"
               width={1824}
               height={1080}
-              className="absolute top-0 left-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
+              className="h-full w-full object-cover object-center rounded-md bg-white/5 ring-1 ring-white/10"
             />
           </div>
         </div>
