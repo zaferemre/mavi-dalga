@@ -44,13 +44,15 @@ const BlogPreview = () => {
             key={blog._id}
             className="relative rounded-xl overflow-hidden shadow-lg bg-white cursor-pointer transform hover:scale-105 transition duration-300 h-96"
             onClick={() => router.push("/mdblog")}
+            style={{
+              backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3), transparent), url(${
+                blog.image || "/logoBig.webp"
+              })`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-            <img
-              src={blog.image}
-              alt={blog.title}
-              className="w-full h-full object-cover"
-            />
+            <div className="absolute inset-0"></div>
             <div className="absolute bottom-0 p-6 text-white">
               <div className="flex items-center mb-2">
                 <p className="text-sm">
