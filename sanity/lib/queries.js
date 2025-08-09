@@ -58,3 +58,11 @@ export const postSlugsQuery = groq`*[_type == "post"] {
   "slug": slug.current,
   date
 }`;
+
+// sanity/queries.js (or inline as a string)
+export const BODY_PREVIEW_BY_SLUG = `
+*[_type == "post" && slug.current == $slug][0]{
+  // pull the whole body text, then we’ll truncate in UI
+  "bodyText": pt::text(body)
+}
+`;

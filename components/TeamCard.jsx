@@ -1,26 +1,33 @@
 "use client";
 
-const TeamCard = ({ member, onClick }) => {
-  return (
-    <div
-      className="bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer"
-      onClick={() => onClick(member)}
-    >
-      {/* Image with rounded top */}
-      <img
-        src={member.image?.asset?.url || "logoBig.webp"}
-        alt={member.name}
-        className="w-full h-64 object-cover rounded-t-lg"
-      />
+import { motion } from "motion/react";
 
-      {/* Content */}
+const TeamCard = ({ member }) => {
+  const img = member?.image?.asset?.url || "/logoBig.webp";
+
+  return (
+    <motion.article
+      className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm"
+      whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0,0,0,0.12)" }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+    >
+      {/* Shared image element */}
+      <motion.div
+        layoutId={`img-${member._id}`}
+        className="relative w-full aspect-[4/5]"
+      >
+        <img
+          src={img}
+          alt={member.name}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </motion.div>
+
       <div className="p-4">
-        <h3 className="text-xl font-semibold text-gray-900">{member.name}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {member.role}
-        </p>
+        <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+        <p className="text-sm text-gray-500">{member.role}</p>
       </div>
-    </div>
+    </motion.article>
   );
 };
 

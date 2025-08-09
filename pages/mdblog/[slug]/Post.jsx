@@ -4,14 +4,15 @@ import Image from "next/image";
 import { client } from "../../../sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { Card, CardContent } from "../../../components/ui/Card";
-import BlogLayout from "../../../components/BlogLayout";
+
+const builder = imageUrlBuilder(client);
+const urlFor = (src) => builder.image(src).auto("format");
 
 export default function Post({ post }) {
   if (!post) {
     return <p className="text-center text-gray-500 mt-10">Post not found.</p>;
   }
 
-  const builder = imageUrlBuilder(client);
   const title = post?.title || "Untitled Post";
   const description = post?.description;
   const mainImage = post?.mainImage;
@@ -19,104 +20,137 @@ export default function Post({ post }) {
   const body = post?.body || [];
 
   return (
-    <article className="mx-auto w-full max-w-screen-xl gap-5 md:grid-cols-4 md:pt-8 lg:gap-4 lg:px-20">
-      <main className="md:col-span-3 mx-auto w-full">
-        <Card>
-          <CardContent className="p-10">
-            {/* Title and Description */}
-            <h1 className="text-left text-3xl font-bold break-words">
-              {title}
-            </h1>
-            {description && (
-              <p className="text-left text-lg my-4 break-words">
-                {description}
-              </p>
-            )}
+    <article className="w-full">
+      <Card>
+        <CardContent className="p-5 sm:p-8 lg:p-10">
+          {/* Title & Deck */}
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            {title}
+          </h1>
+          {description && (
+            <p className="text-lg text-gray-700 mt-3">{description}</p>
+          )}
 
-            {/* ✅ Display Main Image if Available */}
-            {mainImage && (
-              <div className="relative w-full h-[450px] my-8">
-                <Image
-                  src={builder.image(mainImage).width(1200).height(675).url()}
-                  alt={mainImageAlt}
-                  fill
-                  className="object-cover rounded-lg"
-                  priority
-                />
-              </div>
-            )}
+          {/* HERO image (ok to crop, looks editorial) */}
+          {mainImage && (
+            <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden bg-gray-100 mt-6">
+              <Image
+                src={urlFor(mainImage)
+                  .width(1600)
+                  .height(900)
+                  .fit("fillmax")
+                  .url()}
+                alt={mainImageAlt}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
+              />
+            </div>
+          )}
 
-            {/* ✅ Render Blog Content with Quote Handling */}
-            {body.length > 0 ? (
+          {/* Body */}
+          {body.length > 0 ? (
+            <div
+              className="prose prose-gray max-w-none mt-8
+                            prose-headings:scroll-mt-24
+                            prose-img:rounded-xl prose-img:shadow
+                            prose-blockquote:border-l-4 prose-blockquote:border-gray-300
+                            prose-a:text-blue-600 hover:prose-a:underline"
+            >
               <PortableText
                 value={body}
                 components={{
                   block: {
                     h2: ({ children }) => (
-                      <h2 className="text-2xl font-bold my-4 text-left break-words">
+                      <h2 className="text-2xl sm:text-3xl font-semibold mt-10 mb-4">
                         {children}
                       </h2>
                     ),
                     h3: ({ children }) => (
-                      <h3 className="text-xl font-semibold my-4 text-left break-words">
+                      <h3 className="text-xl sm:text-2xl font-semibold mt-8 mb-3">
                         {children}
                       </h3>
                     ),
                     normal: ({ children }) => (
-                      <p className="my-4 text-gray-700 text-left break-words">
-                        {children}
-                      </p>
+                      <p className="text-gray-800">{children}</p>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote className="italic border-l-4 border-gray-400 pl-4  text-black bg-gray-50 p-3 rounded-md my-4">
+                      <blockquote className="italic bg-gray-50 p-4 rounded-md my-6">
                         {children}
                       </blockquote>
                     ),
                   },
                   marks: {
                     em: ({ children }) => (
-                      <em className="italic font-normal text-[#4A4A4A]">
-                        {children}
-                      </em>
-                    ), // ✅ Darker gray for readability
+                      <em className="italic text-gray-700">{children}</em>
+                    ),
                     strong: ({ children }) => (
-                      <strong className="font-bold">{children}</strong>
+                      <strong className="font-semibold">{children}</strong>
                     ),
                     link: ({ value, children }) => (
                       <a
                         href={value?.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 underline break-all"
+                        className="font-medium"
                       >
                         {children}
                       </a>
                     ),
+                    code: ({ children }) => (
+                      <code className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-800">
+                        {children}
+                      </code>
+                    ),
                   },
                   types: {
                     image: ({ value }) => {
+                      // Body images: NEVER crop
+                      const url = urlFor(value).fit("max").url();
+                      const alt = value?.alt || "Image";
+                      const caption = value?.caption;
+
                       return (
-                        <div className="relative w-full h-[450px] my-8">
-                          <Image
-                            src={builder.image(value).url()}
-                            alt={value.alt || "Blog Image"}
-                            fill
-                            className="object-cover rounded-lg"
-                          />
-                        </div>
+                        <figure className="my-8">
+                          <div className="relative w-full bg-gray-100 rounded-xl overflow-hidden">
+                            {/* Let image keep its natural ratio (no fixed height) */}
+                            <Image
+                              src={url}
+                              alt={alt}
+                              width={1600}
+                              height={900}
+                              className="w-full h-auto object-contain"
+                              sizes="100vw"
+                            />
+                          </div>
+                          {caption && (
+                            <figcaption className="mt-2 text-sm text-gray-500 text-center">
+                              {caption}
+                            </figcaption>
+                          )}
+                        </figure>
                       );
                     },
                   },
+                  list: {
+                    bullet: ({ children }) => (
+                      <ul className="list-disc pl-6">{children}</ul>
+                    ),
+                    number: ({ children }) => (
+                      <ol className="list-decimal pl-6">{children}</ol>
+                    ),
+                  },
                 }}
               />
-            ) : (
-              <p className="text-gray-500 text-center mt-6">
-                No content available.
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      </main>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center mt-6">
+              No content available.
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </article>
   );
 }

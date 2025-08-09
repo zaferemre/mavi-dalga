@@ -38,7 +38,6 @@ export default function Home() {
     fetchWelcomeText();
   }, []);
 
-  // Custom serializer for PortableText
   const portableTextComponents = {
     block: {
       h1: ({ children }) => (
@@ -74,7 +73,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* Modal */}
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -82,7 +80,7 @@ export default function Home() {
         >
           <div
             className="bg-[#fe5200] p-6 rounded-lg shadow-lg max-w-lg relative"
-            onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               className="absolute top-2 right-2 text-white"
@@ -90,7 +88,6 @@ export default function Home() {
             >
               ✕
             </button>
-            {/* Render PortableText with proper formatting */}
             <div className="text-lg text-white">
               <PortableText
                 value={welcomeText?.body}
@@ -101,17 +98,13 @@ export default function Home() {
         </div>
       )}
 
-      {/* Transparent Header */}
       <Header />
-
-      {/* Hero Section */}
       <Hero />
       <BlogPreview />
       <Content />
       <FeatureSec />
-      <Bento />
-      <CTA />
 
+      <CTA />
       <Footer />
     </div>
   );

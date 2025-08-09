@@ -17,9 +17,9 @@ export default function Header() {
     { label: "HAKKIMIZDA", link: "/hakkimizda" },
     { label: "ARŞİV", link: "/arsiv" },
     { label: "MDBLOG", link: "/mdblog" },
-    {
-      /*{ label: "KATKI YAP", link: "/katki-yap" }*/
-    },
+    // ✅ Yeni eklenen başlıklar:
+    { label: "DESTEK OL", link: "/destekol" },
+    { label: "KATKI YAP", link: "/katkiyap" },
     { label: "İLETİŞİM", link: "/iletisim" },
   ];
 
@@ -57,6 +57,7 @@ export default function Header() {
               className={`hover:opacity-70 transition duration-150 ${
                 scrolled ? "text-black" : "text-white"
               }`}
+              aria-label="Twitter"
             >
               <i className="fa fa-twitter text-2xl"></i>
             </a>
@@ -67,6 +68,7 @@ export default function Header() {
               className={`hover:opacity-70 transition duration-150 ${
                 scrolled ? "text-black" : "text-white"
               }`}
+              aria-label="Instagram"
             >
               <i className="fa fa-instagram text-2xl"></i>
             </a>
@@ -77,6 +79,7 @@ export default function Header() {
               className={`hover:opacity-70 transition duration-150 ${
                 scrolled ? "text-black" : "text-white"
               }`}
+              aria-label="LinkedIn"
             >
               <i className="fa fa-linkedin text-2xl"></i>
             </a>
@@ -87,6 +90,7 @@ export default function Header() {
               className={`ml-4 transition duration-150 ease-in-out md:hidden ${
                 scrolled ? "text-black hover:text-gray-700" : "text-white"
               }`}
+              aria-label="Menüyü aç/kapat"
             >
               <svg
                 fill="currentColor"
