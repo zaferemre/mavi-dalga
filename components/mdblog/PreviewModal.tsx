@@ -137,7 +137,7 @@ export default function PreviewModal({
                 onClick={onShare}
               >
                 <FiShare2 />
-                Paylaş (hikâye görseli)
+                Paylaş
               </button>
               <button
                 className="text-sm text-gray-600 hover:text-gray-800"
