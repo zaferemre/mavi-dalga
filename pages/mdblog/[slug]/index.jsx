@@ -11,7 +11,6 @@ export const revalidate = 60; // Revalidate data every 60 seconds
 export async function getStaticPaths() {
   try {
     const posts = await client.fetch(postPathsQuery);
-    console.log("✅ Fetched posts for paths:", posts);
 
     if (!Array.isArray(posts)) {
       console.error("❌ Sanity returned invalid posts:", posts);
@@ -49,7 +48,6 @@ export async function getStaticProps({ params }) {
       return { notFound: true };
     }
 
-    console.log("✅ Successfully fetched post:", post);
     return {
       props: { post },
       revalidate: 10, // ISR (Incremental Static Regeneration)

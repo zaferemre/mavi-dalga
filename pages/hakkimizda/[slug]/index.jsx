@@ -25,7 +25,6 @@ export async function getStaticPaths() {
     const members = await client.fetch(teamMemberPathsQuery);
 
     // Debugging: Log fetched slugs to verify structure
-    console.log("Fetched team members:", members);
 
     // Ensure slugs exist
     const paths = members
