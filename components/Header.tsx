@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -28,19 +27,29 @@ export default function Header() {
   const mobileMainMenuItems = menuItems.slice(0, 3);
   const mobileDropdownItems = menuItems.slice(3);
 
+  const idleOpen = !scrolled && mobileMenuOpen;
+
   return (
     <header
-      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-white text-black shadow-md" : "bg-transparent text-white"
-      }`}
+      className="fixed left-0 top-0 z-50 w-full"
+      aria-label="Site üst menü"
     >
-      <nav className="relative mx-auto flex w-full flex-col items-center justify-between font-chronica">
+      <nav
+        className={[
+          "relative mx-auto flex flex-col items-center justify-between font-chronica",
+          "w-full  transition-colors duration-300",
+          mobileMenuOpen ? "overflow-visible" : "overflow-hidden",
+          scrolled || idleOpen
+            ? "bg-white text-black shadow-lg"
+            : "bg-transparent text-white",
+        ].join(" ")}
+      >
+        {/* Top row - fixed height */}
         <div className="flex w-full items-center justify-between px-6 py-4">
-          {/* Logo */}
           <Link
             href="/"
-            className={`leading-none ${scrolled ? "text-black" : "text-white"}`}
             aria-label="Mavi Dalga Ana Sayfa"
+            className="leading-none"
           >
             <div className="text-5xl font-bold tracking-[0.5em]">
               <div>mavi</div>
@@ -48,54 +57,39 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Right */}
+          {/* Right side */}
           <div className="ml-auto flex items-center space-x-4">
-            <a
-              href="https://twitter.com/mavidalgadergi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-2xl transition ${
-                scrolled
-                  ? "text-black hover:opacity-70"
-                  : "text-white hover:opacity-80"
-              }`}
-              aria-label="Twitter"
-            >
-              <i className="fa fa-twitter" />
-            </a>
-            <a
-              href="https://www.instagram.com/mavidalgadergi/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-2xl transition ${
-                scrolled
-                  ? "text-black hover:opacity-70"
-                  : "text-white hover:opacity-80"
-              }`}
-              aria-label="Instagram"
-            >
-              <i className="fa fa-instagram" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/mavidalga/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-2xl transition ${
-                scrolled
-                  ? "text-black hover:opacity-70"
-                  : "text-white hover:opacity-80"
-              }`}
-              aria-label="LinkedIn"
-            >
-              <i className="fa fa-linkedin" />
-            </a>
+            <div className="hidden items-center space-x-4 md:flex">
+              <a
+                href="https://twitter.com/mavidalgadergi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl hover:opacity-80"
+              >
+                <i className="fa fa-twitter" />
+              </a>
+              <a
+                href="https://www.instagram.com/mavidalgadergi/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl hover:opacity-80"
+              >
+                <i className="fa fa-instagram" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/mavidalga/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl hover:opacity-80"
+              >
+                <i className="fa fa-linkedin" />
+              </a>
+            </div>
 
             {/* Hamburger */}
             <button
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className={`ml-4 md:hidden ${
-                scrolled ? "text-black hover:text-gray-700" : "text-white"
-              }`}
+              className="ml-4 md:hidden hover:opacity-80"
               aria-expanded={mobileMenuOpen}
               aria-label="Menüyü aç/kapat"
             >
@@ -112,18 +106,20 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Desktop nav */}
-        <div className="w-full border-t border-gray-200">
+        {/* Divider */}
+        <div
+          className={[
+            "w-full border-t",
+            scrolled || idleOpen ? "border-black/15" : "border-white/20",
+          ].join(" ")}
+        >
+          {/* Desktop nav */}
           <ul className="hidden items-center justify-center px-2 sm:px-0 md:flex">
             {menuItems.map(({ label, link }) => (
               <li key={label} className="mr-4">
                 <Link
                   href={link}
-                  className={`block py-2 text-sm font-semibold tracking-widest transition ${
-                    scrolled
-                      ? "text-black hover:text-gray-700"
-                      : "text-white hover:opacity-80"
-                  }`}
+                  className="block py-2 text-sm font-semibold tracking-widest hover:opacity-80"
                 >
                   {label}
                 </Link>
@@ -137,11 +133,7 @@ export default function Header() {
               <li key={label} className="mr-4">
                 <Link
                   href={link}
-                  className={`block py-2 text-sm font-semibold tracking-widest transition ${
-                    scrolled
-                      ? "text-black hover:text-gray-700"
-                      : "text-white hover:opacity-80"
-                  }`}
+                  className="block py-2 text-sm font-semibold tracking-widest hover:opacity-80"
                 >
                   {label}
                 </Link>
@@ -151,30 +143,64 @@ export default function Header() {
         </div>
 
         {/* Mobile dropdown */}
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {mobileMenuOpen && (
             <motion.div
+              key="expand"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
-              exit={{
-                height: prefersReducedMotion ? "auto" : 0,
-                opacity: prefersReducedMotion ? 1 : 0,
-              }}
-              className="absolute top-full w-full bg-white text-black shadow-md md:hidden"
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="w-full md:hidden rounded-b-2xl overflow-hidden bg-white text-black"
             >
-              <ul className="flex flex-col space-y-2 px-6 py-4">
-                {mobileDropdownItems.map(({ label, link }) => (
-                  <li key={label}>
-                    <Link
-                      href={link}
-                      className="block py-2 text-sm font-semibold transition hover:text-gray-700"
+              <div className="px-6 py-4 border-t border-black/10">
+                <ul className="grid grid-cols-1 gap-2">
+                  {mobileDropdownItems.map(({ label, link }) => (
+                    <li key={label}>
+                      <Link
+                        href={link}
+                        className="block py-2 text-base font-semibold tracking-widest hover:opacity-80"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Socials in dropdown */}
+                <div className="mt-4 border-t border-black/10 pt-4 pb-2">
+                  <div className="flex items-center justify-center gap-6 text-2xl">
+                    <a
+                      href="https://twitter.com/mavidalgadergi"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                      <i className="fa fa-twitter" />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/mavidalgadergi/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <i className="fa fa-instagram" />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/company/mavidalga/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-80"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <i className="fa fa-linkedin" />
+                    </a>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

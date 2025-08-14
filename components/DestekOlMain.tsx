@@ -1,7 +1,11 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { FiX } from "react-icons/fi";
 
-const spring = { type: "spring", stiffness: 280, damping: 26 };
+// Removed custom spring transition to avoid type error with motion/react
+// const spring = { type: "spring", stiffness: 280, damping: 26 };
 
 const ACCOUNTS = [
   {
@@ -28,12 +32,13 @@ const ACCOUNTS = [
 
 const DestekOl = () => {
   const [showModal, setShowModal] = useState(false);
-  const [copied, setCopied] = useState(null); // e.g., "iban-0", "holder-1"
-  const modalRef = useRef(null);
+  const [copied, setCopied] = useState<string | null>(null); // e.g., "iban-0", "holder-1"
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   // Lock scroll + ESC to close
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setShowModal(false);
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setShowModal(false);
     if (showModal) {
       document.addEventListener("keydown", onKey);
       document.body.style.overflow = "hidden";
@@ -44,19 +49,21 @@ const DestekOl = () => {
     };
   }, [showModal]);
 
-  const copy = async (key, value) => {
+  const copy = async (key: string, value: string) => {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(key);
       setTimeout(() => setCopied(null), 1500);
-    } catch {}
+    } catch {
+      // no-op
+    }
   };
 
   // Close on click outside
   useEffect(() => {
     if (!showModal) return;
-    const onClick = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
+    const onClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
         setShowModal(false);
       }
     };
@@ -78,9 +85,8 @@ const DestekOl = () => {
 
       <main className="mx-auto my-10 max-w-3xl px-4 sm:px-6">
         <motion.section
-          initial={{ y: 14, opacity: 0 }}
-          animate={{ y: 0, opacity: 1, transition: spring }}
-          className="rounded-2xl border border-purple-100 bg-white/70 p-8 shadow-xl backdrop-blur-md"
+          animate={{ y: 0, opacity: 1 }}
+          className="rounded-2xl border border-purple-100 bg-white/70 p-6 sm:p-8 shadow-xl backdrop-blur-md"
         >
           <header className="mb-6">
             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
@@ -88,14 +94,14 @@ const DestekOl = () => {
                 Destek Ol
               </span>
             </h1>
-            <p className="mt-3 text-gray-700 leading-relaxed">
+            <p className="mt-3 leading-relaxed text-gray-700">
               Mavi Dalga kâr amacı gütmeyen bir öğrenci dergisidir.
               Çalışmalarımıza destek olmak isterseniz, aşağıdaki bilgilerle
               bağışta bulunabilirsiniz.
             </p>
           </header>
 
-          <div className="mb-8 rounded-xl border border-purple-100 bg-gradient-to-br from-white to-purple-50/30 p-6">
+          <div className="mb-8 rounded-xl border border-purple-100 bg-gradient-to-br from-white to-purple-50/30 p-4 sm:p-6">
             <h2 className="mb-3 text-2xl font-semibold text-purple-800">
               Bağışçı Hakları
             </h2>
@@ -123,7 +129,7 @@ const DestekOl = () => {
 
           <motion.div
             initial={{ scale: 0.97, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, transition: spring }}
+            animate={{ scale: 1, opacity: 1 }}
             className="mb-8"
           >
             <button
@@ -150,6 +156,7 @@ const DestekOl = () => {
       <AnimatePresence>
         {showModal && (
           <>
+            {/* Backdrop */}
             <motion.div
               key="backdrop"
               className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
@@ -162,13 +169,16 @@ const DestekOl = () => {
                 opacity: 0,
                 transition: { duration: 0.2, ease: "easeIn" },
               }}
+              onClick={() => setShowModal(false)}
             />
+
+            {/* Dialog wrapper (centers on desktop, bottom sheet on mobile) */}
             <motion.div
-              key="dialog"
+              key="dialog-wrap"
               role="dialog"
               aria-modal="true"
               aria-labelledby="donation-title"
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
               initial={{ opacity: 0 }}
               animate={{
                 opacity: 1,
@@ -179,11 +189,12 @@ const DestekOl = () => {
                 transition: { duration: 0.2, ease: "easeIn" },
               }}
             >
+              {/* Panel */}
               <motion.div
                 ref={modalRef}
                 initial={{
-                  y: 24,
-                  scale: 0.96,
+                  y: 28,
+                  scale: 1,
                   opacity: 0,
                   filter: "blur(6px)",
                 }}
@@ -195,26 +206,35 @@ const DestekOl = () => {
                   transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
                 }}
                 exit={{
-                  y: 14,
-                  scale: 0.98,
+                  y: 18,
+                  scale: 1,
                   opacity: 0,
                   filter: "blur(4px)",
                   transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
                 }}
-                className="relative w-full max-w-2xl rounded-2xl border border-purple-100 bg-white p-6 shadow-2xl"
+                className={
+                  // Bottom sheet on mobile; centered card on ≥sm
+                  "relative w-full sm:max-w-2xl rounded-t-2xl sm:rounded-2xl border border-purple-100 bg-white shadow-2xl " +
+                  "p-4 sm:p-6 " +
+                  // Height/scroll handling
+                  "max-h-[85vh] sm:max-h-[80vh] overflow-y-auto overscroll-contain " +
+                  // Safe areas on mobile
+                  "pb-[max(1rem,env(safe-area-inset-bottom))]"
+                }
               >
+                {/* Close */}
                 <button
                   onClick={() => setShowModal(false)}
                   aria-label="Kapat"
-                  className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:bg-gray-50 hover:text-gray-700"
+                  className="absolute right-2.5 top-2.5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition hover:bg-gray-50 hover:text-gray-800"
                 >
-                  ✕
+                  <FiX className="h-5 w-5" />
                 </button>
 
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6 pr-10">
                   <h3
                     id="donation-title"
-                    className="text-xl font-semibold text-purple-800"
+                    className="text-lg sm:text-xl font-semibold text-purple-800"
                   >
                     MD Hesap Bilgileri
                   </h3>
@@ -225,11 +245,11 @@ const DestekOl = () => {
                 </div>
 
                 {/* Accounts */}
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {ACCOUNTS.map((acc, idx) => (
                     <div
                       key={acc.ibanRaw}
-                      className="rounded-xl border border-gray-100 bg-gray-50/60 p-4"
+                      className="rounded-xl border border-gray-100 bg-gray-50/60 p-3 sm:p-4"
                     >
                       <Field label="Banka" value={acc.bank} />
                       <Field
@@ -278,16 +298,32 @@ const DestekOl = () => {
   );
 };
 
-const Field = ({ label, value, mono, onCopy, copied, helper }) => {
+const Field = ({
+  label,
+  value,
+  mono,
+  onCopy,
+  copied,
+  helper,
+}: {
+  label: string;
+  value: string;
+  mono?: boolean;
+  onCopy?: () => void;
+  copied?: boolean;
+  helper?: string;
+}) => {
   return (
-    <div className="mb-3 flex items-start justify-between gap-4 rounded-lg border border-gray-100 bg-white p-3">
-      <div>
+    <div className="mb-3 flex items-start justify-between gap-3 rounded-lg border border-gray-100 bg-white p-3">
+      <div className="min-w-0">
         <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
           {label}
         </div>
         <div
           className={`mt-1 text-gray-900 ${
-            mono ? "font-mono text-[13.5px] tracking-tight" : "text-[15px]"
+            mono
+              ? "font-mono text-[13.5px] tracking-tight break-all"
+              : "text-[15px]"
           }`}
         >
           {value}
