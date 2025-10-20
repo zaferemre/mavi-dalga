@@ -257,7 +257,7 @@ const DestekOl = () => {
                         copied={copied === `holder-${idx}`}
                       />
                       <a
-                        href="https://instagram.com/mavidalga"
+                        href="https://instagram.com/mavidalgadergi"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block"
