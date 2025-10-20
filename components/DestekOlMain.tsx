@@ -11,8 +11,7 @@ const ACCOUNTS = [
   {
     bank: "Yapı ve Kredi Bankası",
     holder: "Edanur Koçbıyık",
-    ibanDisplay: "TR27 0006 7010 0000 0020 3739 77",
-    ibanRaw: "TR270006701000000020373977",
+    ibanDisplay: "Iban için bize yaz.",
     notes: [
       "Anonim bağışçıysanız: Bağış tarihi",
       "Anonim değilseniz: İsim Soyisim – Bağış tarihi",
@@ -21,8 +20,7 @@ const ACCOUNTS = [
   {
     bank: "Ziraat Bankası",
     holder: "Zeynep Duru Kuzu",
-    ibanDisplay: "TR77 0001 0090 1055 8324 2050 01",
-    ibanRaw: "TR770001009010558324205001",
+    ibanDisplay: "Iban için bize yaz.",
     notes: [
       "Anonim bağışçıysanız: Bağış tarihi",
       "Anonim değilseniz: İsim Soyisim – Bağış tarihi",
@@ -248,7 +246,7 @@ const DestekOl = () => {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {ACCOUNTS.map((acc, idx) => (
                     <div
-                      key={acc.ibanRaw}
+                      key={acc.ibanDisplay}
                       className="rounded-xl border border-gray-100 bg-gray-50/60 p-3 sm:p-4"
                     >
                       <Field label="Banka" value={acc.bank} />
@@ -258,14 +256,19 @@ const DestekOl = () => {
                         onCopy={() => copy(`holder-${idx}`, acc.holder)}
                         copied={copied === `holder-${idx}`}
                       />
-                      <Field
-                        label="IBAN"
-                        value={acc.ibanDisplay}
-                        mono
-                        onCopy={() => copy(`iban-${idx}`, acc.ibanRaw)}
-                        copied={copied === `iban-${idx}`}
-                        helper="Kopyala → boşluksuz IBAN"
-                      />
+                      <a
+                        href="https://instagram.com/mavidalga"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        <Field
+                          label="IBAN"
+                          value={acc.ibanDisplay}
+                          mono
+                          helper="IBAN almak için Instagram'dan bize yazın."
+                        />
+                      </a>
 
                       <div className="mt-3 rounded-lg border border-gray-100 bg-white p-3">
                         <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">

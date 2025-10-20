@@ -13,7 +13,6 @@ const spring: { type: "spring"; stiffness: number; damping: number } = {
   damping: 32,
 };
 
-// Panel delay ~0.25s after image starts expanding
 const PANEL_DELAY = 0.25;
 
 export default function PreviewModal({
@@ -36,8 +35,10 @@ export default function PreviewModal({
   onShare: () => void;
 }) {
   if (!open || !selected) return null;
+
   const id = selected._id || selected.slug?.current || "";
   const slug = selected.slug?.current ?? "";
+  const displayImg = selectedImg || "/logoBig.webp";
 
   return (
     <AnimatePresence>
@@ -52,7 +53,7 @@ export default function PreviewModal({
         aria-label="Kapat"
       />
 
-      {/* Centered modal shell */}
+      {/* Centered modal */}
       <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
@@ -62,28 +63,27 @@ export default function PreviewModal({
             transition: { duration: 0.18, ease: "easeOut" },
           }}
           exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.14 } }}
-          className="pointer-events-auto w-[min(92vw,950px)] max-h-[88vh] overflow-hidden rounded-3xl bg-white shadow-2xl"
+          className="pointer-events-auto flex w-[min(92vw,950px)] max-h-[88vh] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
           role="dialog"
           aria-modal="true"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Shared element: expands from the card */}
+          {/* Image */}
           <motion.div
             layoutId={`post-${id}-image`}
             transition={spring}
-            className="relative w-full"
+            className="relative w-full h-[60vh] bg-gray-100"
           >
-            <div className="relative aspect-[16/9] w-full bg-gray-100">
-              <Image
-                src={selectedImg || "/logoBig.webp"}
-                alt={selected?.title || "Post"}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+            <Image
+              src={displayImg}
+              alt={selected?.title || "Post image"}
+              fill
+              className="object-cover"
+              sizes="(max-width: 950px) 100vw, 950px"
+              priority
+            />
 
-            {/* Close button floats over image */}
+            {/* Close button */}
             <button
               onClick={onClose}
               aria-label="Kapat"
@@ -93,7 +93,7 @@ export default function PreviewModal({
             </button>
           </motion.div>
 
-          {/* White info panel: slides up after ~0.25s, nudges image up a bit */}
+          {/* Bottom info panel */}
           <motion.div
             initial={{ y: 28, opacity: 0 }}
             animate={{
@@ -106,7 +106,10 @@ export default function PreviewModal({
               },
             }}
             exit={{ y: 16, opacity: 0, transition: { duration: 0.15 } }}
-            className="p-6 md:p-8"
+            className="flex-shrink-0 p-6 md:p-8 bg-white"
+            style={{
+              minHeight: "230px",
+            }}
           >
             <h2 className="text-xl font-bold tracking-tight text-gray-900 md:text-2xl">
               {selected?.title}
